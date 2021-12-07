@@ -17,8 +17,11 @@ namespace Task1
             IEnumerable<Supplier> suppliers
         )
         {
-            
-                         
+            var result = new List<(Customer, IEnumerable<Supplier>)>();
+            customers.ToList().ForEach(c => result.Add((c,
+                suppliers.Where(s => s.Country == c.Country && s.City == c.City).ToList())));
+
+            return result;
         }
 
         public static IEnumerable<(Customer customer, IEnumerable<Supplier> suppliers)> Linq2UsingGroup(
