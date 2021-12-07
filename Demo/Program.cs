@@ -25,10 +25,12 @@ namespace Demo
                 new Phone {Name="LG G 4", Company="LG" }
             };
 
-            var phoneGroups = from phone in phones
+            var phoneGroups1 = from phone in phones
                               group phone by phone.Company;
 
-            foreach (IGrouping<string, Phone> g in phoneGroups)
+            var phoneGroups = phones.GroupBy(phone => new { phone.Company});
+
+            foreach (var g in phoneGroups)
             {
                 Console.WriteLine("kEY " + g.Key);
                 foreach (var t in g)

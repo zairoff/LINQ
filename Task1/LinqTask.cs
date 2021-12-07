@@ -29,12 +29,16 @@ namespace Task1
             IEnumerable<Supplier> suppliers
         )
         {
-            throw new NotImplementedException();
+            var result = new List<(Customer, IEnumerable<Supplier>)>();
+            customers.ToList().ForEach(c => result.Add((c,
+                suppliers.Where(s => s.Country == c.Country && s.City == c.City).ToList())));
+
+            return result;
         }
 
         public static IEnumerable<Customer> Linq3(IEnumerable<Customer> customers, decimal limit)
         {
-            throw new NotImplementedException();
+            return customers.Where(c => c.Orders.Any(o => o.Total > limit));
         }
 
         public static IEnumerable<(Customer customer, DateTime dateOfEntry)> Linq4(
