@@ -17,9 +17,9 @@ namespace Task1
             IEnumerable<Supplier> suppliers
         )
         {
-            var result = new List<(Customer, IEnumerable<Supplier>)>();
-            customers.ToList().ForEach(c => result.Add((c,
-                suppliers.Where(s => s.Country == c.Country && s.City == c.City).ToList())));
+            var result = customers.Select(customer => (customer, suppliers.Where(s =>
+                                    s.Country == customer.Country && 
+                                    s.City == customer.City))).ToList();
 
             return result;
         }
@@ -29,9 +29,9 @@ namespace Task1
             IEnumerable<Supplier> suppliers
         )
         {
-            var result = new List<(Customer, IEnumerable<Supplier>)>();
-            customers.ToList().ForEach(c => result.Add((c,
-                suppliers.Where(s => s.Country == c.Country && s.City == c.City).ToList())));
+            var result = customers.Select(customer => (customer, suppliers.Where(s =>
+                                     s.Country == customer.Country &&
+                                     s.City == customer.City))).ToList();
 
             return result;
         }
@@ -45,19 +45,35 @@ namespace Task1
             IEnumerable<Customer> customers
         )
         {
-            throw new NotImplementedException();
+            var result = from customer in customers
+                         where customer.Orders.Count() > 0
+                         select ( customer, customer.Orders[0].OrderDate );
+
+            return result;
         }
 
         public static IEnumerable<(Customer customer, DateTime dateOfEntry)> Linq5(
             IEnumerable<Customer> customers
         )
         {
-            throw new NotImplementedException();
+            var result = (from customer in customers
+                         where customer.Orders.Count() > 0
+                         orderby customer.CompanyName ascending 
+                         from order in customer.Orders.Take(1)
+                         orderby order.OrderDate ascending                          
+                         select (customer, customer.Orders[0].OrderDate));
+
+            return result;
         }
 
         public static IEnumerable<Customer> Linq6(IEnumerable<Customer> customers)
         {
-            throw new NotImplementedException();
+            var result = customers.Where(c =>
+                            !c.Phone.Contains("(") ||
+                            string.IsNullOrEmpty(c.Region) ||
+                            !c.PostalCode.All(char.IsDigit));
+
+            return result;
         }
 
         public static IEnumerable<Linq7CategoryGroup> Linq7(IEnumerable<Product> products)
