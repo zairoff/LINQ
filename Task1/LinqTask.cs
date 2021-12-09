@@ -89,7 +89,19 @@ namespace Task1
 		            price - 19.0000
              */
 
-            throw new NotImplementedException();
+            var result = products.GroupBy(product => product.Category)
+                        .Select(group => new Linq7CategoryGroup
+                        {
+                            Category = group.Key,
+                            UnitsInStockGroup = group.GroupBy(product => product.UnitsInStock)
+                                                .Select(group2 => new Linq7UnitsInStockGroup
+                                                {
+                                                    UnitsInStock = group2.Key,
+                                                    Prices = group2.Select(product => product.UnitPrice)
+                                                })
+                        });
+
+            return result;
         }
 
         public static IEnumerable<(decimal category, IEnumerable<Product> products)> Linq8(
